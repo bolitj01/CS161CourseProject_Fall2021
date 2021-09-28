@@ -1,4 +1,4 @@
-# CS161CourseProject_Fall2021
+# Idle Soles
 CS 161 Intro to Comp Sci II Course Project - IdleSoles
 
 You are welcome to expand on the project throughout the semester. I will review any pull requests and enhance the project with your feedback. 

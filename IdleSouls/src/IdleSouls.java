@@ -1,6 +1,10 @@
 //import java.util.Timer;
 //import java.util.TimerTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import com.sun.prism.paint.Color;
 
 import javafx.animation.*;
@@ -19,14 +23,16 @@ public class IdleSouls extends Application{
 		launch(args);
 	}
 	
-	public void start(Stage stage) {
+	public void start(Stage stage) throws FileNotFoundException {
 		
 		//Data
 		Label soulsCount = new Label("");
 		SoulManager sl = new SoulManager(soulsCount);
 		Agency startAgency = new Agency("Shoe Store");
 		
-		Image soulpng = new Image("file:Soul.png");
+		File soulf = new File("Soul.png");
+		FileInputStream fis = new FileInputStream(soulf);
+		Image soulpng = new Image(fis);
 		ImageView soulImg = new ImageView(soulpng);
 		Label agencyTitle = new Label(startAgency.name);
 		BorderPane agencyDisplay = new BorderPane(soulImg);

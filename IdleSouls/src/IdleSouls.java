@@ -1,5 +1,7 @@
-import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.Timer;
+//import java.util.TimerTask;
+
+import com.sun.prism.paint.Color;
 
 import javafx.animation.*;
 import javafx.application.Application;
@@ -10,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 public class IdleSouls extends Application{
 	public static void main(String[] args) {
@@ -23,10 +26,11 @@ public class IdleSouls extends Application{
 		SoulManager sl = new SoulManager(soulsCount);
 		Agency startAgency = new Agency("Shoe Store");
 		
-		
-		ImageView soulImg = new ImageView(new Image("file:Soul.png"));
+		Image soulpng = new Image("file:Soul.png");
+		ImageView soulImg = new ImageView(soulpng);
 		Label agencyTitle = new Label(startAgency.name);
 		BorderPane agencyDisplay = new BorderPane(soulImg);
+		//agencyDisplay.getCenter().setStyle("-fx-background-color: BLACK");
 		agencyDisplay.setTop(agencyTitle);
 		
 		BorderPane main = new BorderPane(agencyDisplay);
@@ -74,6 +78,8 @@ public class IdleSouls extends Application{
 				sl.souls -= CultFollowers.internCost;
 				startAgency.internCount++;
 				sl.soulsPerSecond += CultFollowers.internBoost;
+				sl.updateFrequency();
+				sl.restartAddSoulsTimer();
 			}
 		});
 		
@@ -117,35 +123,17 @@ public class IdleSouls extends Application{
 		stage.setScene(s);
 		stage.show();
 		
+		sl.startAddSoulsTimer();
+		sl.startUpdateLabelTimer();
 		
+		soulImg.setOnMouseClicked(event -> {
+			sl.souls++;
+			soulsCount.setText(String.format("%.0f", sl.souls));
+		});
 		
-		
-		
-		
-		
-		
-		
-		long delay = 1000L;
-
-		TimerTask task = new TimerTask() {
-			public void run() {
-				
-				TimerTask runIt = new TimerTask() {
-					public void run() {
-						sl.souls += sl.soulsPerSecond;
-						sl.soulsL.setText(sl.souls + "");
-						sl.time += delay / 1000;
-					}
-				};
-				Platform.runLater(runIt);
-			}
-		};
-
-
-		
-		Timer t = new Timer();
-		
-		t.scheduleAtFixedRate(task, 0, delay);
-
+		stage.setOnCloseRequest(event -> {
+			sl.cancelAddSoulsTimer();
+			sl.cancelUpdateLabelTimer();
+		});
 	}
 }
